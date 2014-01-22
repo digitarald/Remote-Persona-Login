@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon">
+</head>
+<body>
+	<script>
+		(function() {
+
+			var REMOTE_ORIGIN = 'http://localhost:8081';
+			// var REMOTE_ORIGIN = 'app://remote-persona.digitarald.com';
+
+			var id = navigator.id || navigator.mozId || null;
+			if (!id) {
+				alert('Missing mozId API');
+			}
+
+			/**
+			 * Send payload to remote window
+			 * @param {object} Payload
+			 */
+			function toRemote(payload) {
+				window.top.postMessage(JSON.stringify(payload), REMOTE_ORIGIN);
+			}
+
+			function setup(loggedInUser) {
+				id.watch({
+					loggedInUser: loggedInUser,
+					onready: function() {
+						toRemote({event: 'ready'});
+					},
+					onlogin: function(assertion) {
+						toRemote({event: 'login', assertion: assertion});
+					},
+					onlogout: function() {
+						toRemote({event: 'logout'});
+					}
+				});
+			}
+
+			window.addEventListener('message', function(evt) {
+				alert(evt.origin);
+				if (evt.origin != REMOTE_ORIGIN) {
+					console.warn('Ignored message from ' + evt.origin);
+					return;
+				}
+				evt.stopPropagation();
+				var payload = JSON.parse(evt.data);
+
+				switch (payload.event) {
+					case 'setup':
+						setup(payload.loggedInUser);
+						break;
+					case 'login':
+						id.request({siteName: 'Remote Persona Login'});
+						break;
+					case 'logout':
+						id.logout();
+						break;
+				}
+			}, false);
+
+			setTimeout(function() {
+				alert(location.origin);
+				toRemote({event: 'load'});
+			}, 100);
+		})();
+	</script>
+</body>
+</html>

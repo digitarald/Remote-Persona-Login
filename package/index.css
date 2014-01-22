@@ -1,0 +1,115 @@
+* {
+	box-sizing: border-box;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+}
+
+html {
+	height: 100%;
+	font-size: 100%;
+}
+
+body {
+	min-height: 100%;
+	display: flex;
+	flex-flow: column;
+  flex-direction: column;
+	font: 1rem/1.6rem sans-serif;
+	background-color: #404040;
+	color: #f5f5f5;
+}
+
+header {
+	display: none;
+	height: 2rem;
+	line-height: 2rem;
+	font-weight: bold;
+	padding: 0.5rem 1rem;
+	background-color: #3d3d3d;
+	border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+	box-shadow: 0 0 0.25rem rgba(0, 0, 0, 0.3);
+}
+
+main, .loading {
+	display: flex;
+	height: 6rem;
+}
+
+main {
+	display: none;
+}
+.loading {
+	display: flex;
+}
+
+.state-ready .loading {
+	display: none;
+}
+.state-ready main {
+	display: flex;
+}
+
+footer {
+	flex: 1 1 auto;
+	background-color: #2a2a2a;
+	border-top: 1px solid rgba(255, 255, 255, 0.2);
+	padding: 0.5rem 0.5rem;
+	font-family: monospace;
+	overflow: auto;
+}
+
+/* Logs */
+
+footer ul {
+	margin: 0;
+	padding: 0;
+}
+footer ul li {
+	display: block;
+	font-size: 0.8rem;
+	line-height: 0.9rem;
+	padding-bottom: 0.2rem;
+}
+footer ul li::before {
+	content: '>';
+	padding-right: 0.2rem;
+	color: #aaa;
+}
+
+button {
+	margin: auto;
+	text-align: center;
+	background-color: #5f5f5f;
+	color: #fff;
+	border: none;
+	border-radius: 0.2rem;
+	padding: 0.5rem 1rem;
+	font-size: 1rem;
+	line-height: 1.6rem;
+	cursor: pointer;
+	box-shadow: 0.1rem 0.1rem 0.1rem rgba(0, 0, 0, 0.3);
+}
+button::first-line {
+	font-weight: bold;
+	text-transform: uppercase;
+}
+button small {
+	text-transform: none;
+	font-weight: lighter;
+	font-style: italic;
+	color: #ccc;
+}
+
+#btn-logout {
+	display: none;
+}
+
+.state-loggedin #btn-logout {
+	display: flex;
+}
+.state-loggedin #btn-login {
+	display: none;
+}
